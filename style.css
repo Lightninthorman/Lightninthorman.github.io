@@ -24,11 +24,36 @@ main{
 
 }
 
-.breweryBeers{
+.hopList{
+    display: inline-block;
+    list-style-type: none;
+    padding: 0 4px;
+}
+
+.breweryBeers, .hopList{
     cursor: pointer;
 }
-.breweryBeers:hover{
+.breweryBeers:hover, .hopList:hover{
     color:red;
+}
+
+.hopModal{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width:100%;
+    background-color: rgba(192,192,192,0.8);
+}
+
+.hopDisplay{
+    position:fixed;
+    width:50%;
+    margin:20% auto;
+    height: 100px;
+    background-color: white;
+
 }
 
 /* @media (min-width: 600px){

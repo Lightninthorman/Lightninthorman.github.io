@@ -18,7 +18,8 @@ $(() => {
 
         }).then(
             (data) =>{
-                console.log(data.data);
+
+
                 if(searchBtn === 'beers'){
                     beerCheck(data);
                 }else if(searchBtn === 'breweries'){
@@ -29,6 +30,7 @@ $(() => {
             alert('error')
         })
     }
+    //brewery beer list
     const breweryBeersDb = (breweryId) => {
         $.ajax({
             url: "https://sandbox-api.brewerydb.com/v2/brewery/" + breweryId + "/beers/?key=810aa77f346d134a1c964135c4564018"
@@ -42,6 +44,21 @@ $(() => {
         })
 
     }
+
+    //specific hop details
+    const hopsDb = (hopId) => {
+        $.ajax({
+            url: "https://sandbox-api.brewerydb.com/v2/hop/" + hopId + "/?key=810aa77f346d134a1c964135c4564018"
+
+        }).then(
+            (data) =>{
+                hopModal(data)
+        },
+        (error) => {
+            alert('error')
+        })
+
+    }
 //===================
 //    Functions
 //===================
@@ -49,6 +66,11 @@ $(() => {
     //fuction to run when searching for beer
     //=====
     const beerCheck = (data) => {
+        //verify if any search results were found
+        if(data.data == undefined){
+            $('#col2').html('No results found')
+            return
+        }
         let beer = data.data[0]
         //verify if label data provided
         if(beer.labels == undefined){
@@ -76,26 +98,30 @@ $(() => {
             $('#col2').append($('<p>').html("Hops: No hop profile provided"))
         }else {
             //if hop data provided, loop through ingredients array and list the hops in the beer
-            let hops = beer.ingredients.hops
-            let hopProfile = "Hops: "
+            const hops = beer.ingredients.hops
+            const $hopProfile = $('<ul>').html('Hops: ')
+            $('#col2').append($hopProfile)
             for (i = 0; i < hops.length; i++){
-                hopProfile += hops[i].name + '  |  '
+                $hopProfile.append($('<li>').text(hops[i].name + '  |').addClass('hopList').attr('data-hopId',hops[i].id))
             }
-        $('#col2').append($('<p>').html(hopProfile))
         }
         //add brewery image
-        let $breweryImg = $('<img>').attr('src', data.data[0].breweries[0].images.squareMedium)
-        let $breweryName = $('<p>').html(data.data[0].breweries[0].name)
-        let $website = $('<a>').attr('href',data.data[0].breweries[0].website).html(data.data[0].breweries[0].website)
+        let $breweryImg = $('<img>').attr('src', beer.breweries[0].images.squareMedium).attr('data-brewery',beer.breweries[0].name).addClass('beerPageBreweryInfo')
+        let $breweryName = $('<p>').html(beer.breweries[0].name).attr('data-brewery',beer.breweries[0].name).addClass('beerPageBreweryInfo')
+        let $website = $('<a>').attr('href',beer.breweries[0].website).html(beer.breweries[0].website)
         $('#col3').append($breweryImg).append($breweryName).append($website)
-        //clear the ajax Variables
-        searchBtn = ""
     }
 
     //=====
     //fuction to run when searching for brewery
     //=====
     const breweryCheck = (data) => {
+        //verify if any search results were found
+        if(data.data == undefined){
+            $('#col2').html('No results found')
+            return
+        }
+
         let brewery = data.data[0]
         //col1 elements
         let $breweryImg = $('<img>').attr('src',brewery.images.squareMedium).css('display','block');
@@ -118,13 +144,12 @@ $(() => {
         let breweryId = brewery.id
         $('#col3').append('<h3>').html('Beers brewed by ' + brewery.nameShortDisplay)
         breweryBeersDb(breweryId)
-        // console.log(breweryBeers[0]);
-        // $('#col3').html(breweryBeers[0].name)
-        //clear the ajax Variables
-        searchBtn = ""
-    }
 
-    const addBeerList = (data) => {
+    }
+    //=====
+    //function to add beer list on the brewery page
+    //=====
+        const addBeerList = (data) => {
         const beers = data.data;
         console.log(beers.length);
         const $beerList = $('<ul>')
@@ -135,11 +160,23 @@ $(() => {
         $('#col3').append($beerList)
     }
 
+    //=====
+    //function to show hops modal
+    //=====
+    const hopModal = (data) => {
+        console.log(data.data.name);
+    }
+
+
+
+    //===================
+    //    Events
+    //===================
     $('#beerBtn').on('click', () => {
         const searchInput = $('input').val()
         const searchBtn   = 'beers'
-        $('input').val('')
-        $('.col').empty()
+        $('input').val('');
+        $('.col').empty();
         beerDb(searchBtn, searchInput)
     })
 
@@ -147,12 +184,29 @@ $(() => {
         const searchInput = $('input').val();
         const searchBtn = 'breweries'
         $('input').val('');
-        $('.col').empty()
+        $('.col').empty();
+        beerDb(searchBtn, searchInput)
+    })
+    //click on image or brewery name on beer search page and go to brewery page
+    $('#col3').on('click','.beerPageBreweryInfo', (event) => {
+        const searchInput = $(event.target).attr('data-brewery')
+        const searchBtn   = 'breweries'
+        $('.col').empty();;
+        beerDb(searchBtn, searchInput)
+    })
+    //click on a beer in the beer list on the brewery page and go to that beer page
+    $('#col3').on('click','.breweryBeers',(event) => {
+        const searchInput = $(event.target).html()
+        const searchBtn   = 'beers'
+        $('.col').empty();;
         beerDb(searchBtn, searchInput)
     })
 
-    $('#col3').on('click','.breweryBeers',(event) => {
-        console.log($(event.target).html());
-    })
+    //click on a hop and modal pops up with hop information
+    $('#col2').on('click','.hopList',(event) => {
 
+        const hopId = $(event.target).attr('data-hopId')
+        console.log(hopId);
+        hopsDb(hopId)
+    })
 })
