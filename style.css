@@ -42,7 +42,6 @@ main{
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
     width:100%;
     background-color: rgba(192,192,192,0.8);
 }
@@ -50,8 +49,8 @@ main{
 .hopDisplay{
     position:fixed;
     width:50%;
-    margin:20% auto;
-    height: 100px;
+    margin:25% 25%;
+    padding:40px;
     background-color: white;
 
 }

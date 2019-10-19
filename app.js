@@ -164,7 +164,26 @@ $(() => {
     //function to show hops modal
     //=====
     const hopModal = (data) => {
-        console.log(data.data.name);
+        $('.hopDisplay').empty();
+        const hop = data.data
+        $('.hopModal').css('height', $('body').height() + 40 +'px')
+        $('.hopModal').css('display','block')
+        let countryOrigin = ""
+        let description = hop.description
+        //code to deal with any incomplete data in the API
+        if (hop.country == undefined) {
+            countryOrigin = "No data provided"
+        }else{
+            countryOrigin = hop.country.displayName
+        }
+        if (description == undefined) {
+            description = "No description provided"
+        }
+        //display data (or lack there of) in the modal
+        $('.hopDisplay').append($('<h3>').html(hop.name))
+        $('.hopDisplay').append($('<p>').html("Country of Origin: " + countryOrigin + "<br></br>" + description))
+        $('.hopDisplay').append($('<button>').attr('id','closeModal').html('Close'))
+
     }
 
 
@@ -209,4 +228,13 @@ $(() => {
         console.log(hopId);
         hopsDb(hopId)
     })
+
+    //either of these two options will close the hops modal window
+    $('body').on('click','#closeModal', () => {
+        $('.hopModal').css('display','none')
+    })
+
+    // $('.hopModal').on('click', () => {
+    //     $('.hopModal').toggle()
+    // })
 })
