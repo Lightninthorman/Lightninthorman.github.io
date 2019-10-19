@@ -24,6 +24,12 @@ main{
 
 }
 
+.breweryBeers{
+    cursor: pointer;
+}
+.breweryBeers:hover{
+    color:red;
+}
 
 /* @media (min-width: 600px){
 

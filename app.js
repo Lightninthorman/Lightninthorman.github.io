@@ -157,4 +157,8 @@ $(() => {
         beerDb()
     })
 
+    $('#col3').on('click','.breweryBeers',(event) => {
+        console.log($(event.target).html());
+    })
+
 })
