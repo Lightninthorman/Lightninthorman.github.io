@@ -44,32 +44,34 @@ $(() => {
     //fuction to run when searching for beer
     //=====
     const beerCheck = (data) => {
+        let beer = data.data[0]
         //verify if label data provided
-        if(data.data[0].labels == undefined){
+        if(beer.labels == undefined){
             // if no label provided post a cartoon picture of beer
             let $labelImg = $('<img>').attr('src','imgs/beerNoImage.png')
             $('#col1').append($labelImg)
         }else{
             // if label is provided then access it and append it to the column
-            let $labelImg = $('<img>').attr('src',data.data[0].labels.contentAwareMedium)
+            let $labelImg = $('<img>').attr('src',beer.labels.contentAwareMedium)
             $('#col1').append($labelImg)
         }
+        let $beerName = $('<h3>').html(beer.name + '  |  abv. ' + beer.abv + '%')
+        $('#col2').append($beerName)
         //create the list of data points to return
         let $resultsList = $('<ul>')
-        let $beerName = $('<li>').html(data.data[0].name + '  |  abv. ' + data.data[0].abv + '%')
-        let $style = $('<li>').html('Style: <br>' + data.data[0].style.name)
-        let $description = $('<li>').html('Description: <br>' + data.data[0].description)
-        let $ibu = $('<li>').html('IBU: ' + data.data[0].ibu)
+        let $style = $('<li>').html('Style: <br>' + beer.style.name)
+        let $description = $('<li>').html('Description: <br>' + beer.description)
+        let $ibu = $('<li>').html('IBU: ' + beer.ibu)
 
         //append list to column
-        $('#col2').append($($resultsList).append($beerName).append($style).append($description).append($ibu))
+        $('#col2').append($($resultsList).append($style).append($description).append($ibu))
         //verify if hop data provided
-        if(data.data[0].ingredients == undefined){
+        if(beer.ingredients == undefined){
             //if no hop data provided add text explaining
             $('#col2').append($('<p>').html("Hops: No hop profile provided"))
         }else {
             //if hop data provided, loop through ingredients array and list the hops in the beer
-            let hops = data.data[0].ingredients.hops
+            let hops = beer.ingredients.hops
             let hopProfile = "Hops: "
             for (i = 0; i < hops.length; i++){
                 hopProfile += hops[i].name + '  |  '
@@ -89,7 +91,24 @@ $(() => {
     //fuction to run when searching for brewery
     //=====
     const breweryCheck = (data) => {
-        console.log(data.data[0]);
+        let brewery = data.data[0]
+        //col1 elements
+        let $breweryImg = $('<img>').attr('src',brewery.images.squareMedium).css('display','block');
+        let $website = $('<a>').attr('href',brewery.website).html(brewery.website);
+        //build the address from multiple keys in the API
+        let $location = $('<p>').html(brewery.locations[0].streetAddress + '</br>' + brewery.locations[0].locality + ', ' + brewery.locations[0].region + ' ' + brewery.locations[0].postalCode);
+        //add all col1 data to col1
+        $('#col1').append($breweryImg).append($website).append($location)
+
+        //col2 elements
+        let $breweryName = $('<h3>').html(brewery.name)
+        $('#col2').append($breweryName)
+        //create the list of data points to return
+        let $resultsList = $('<ul>')
+        let $description = $('<li>').html(brewery.description)
+        let $established = $('<li>').html('Established: ' + brewery.established)
+        //clear the ajax Variables
+        searchBtn = ""
     }
 
 
