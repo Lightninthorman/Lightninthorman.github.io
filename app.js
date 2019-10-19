@@ -12,8 +12,14 @@ $(() => {
             }).then(
                 (data) =>{
                     console.log(data.data);
-                    let $labelImg = $('<img>').attr('src',data.data[0].labels.contentAwareMedium)
-                    $('#col1').append($labelImg)
+                    if(data.data[0].labels == undefined){
+                        let $labelImg = $('<img>').attr('src','imgs/beerNoImage.png')
+                        $('#col1').append($labelImg)
+                    }else{
+                        let $labelImg = $('<img>').attr('src',data.data[0].labels.contentAwareMedium)
+                        $('#col1').append($labelImg)
+                    }
+
                     let $resultsList = $('<ul>')
                     let $beerName = $('<li>').html(data.data[0].name + '  |  abv. ' + data.data[0].abv + '%')
                     let $style = $('<li>').html('Style: <br>' + data.data[0].style.name)
