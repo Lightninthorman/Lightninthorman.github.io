@@ -1,10 +1,4 @@
-//===================
-//    Global Variables
-//===================
 
-let searchInput = "";
-let searchBtn = "";
-let breweryId = "";
 
 
 
@@ -15,7 +9,7 @@ $(() => {
     //=====
     //AJAX
     //=====
-    const beerDb = () => {
+    const beerDb = (searchBtn, searchInput) => {
         if(searchInput === ""){
             return
         }
@@ -35,7 +29,7 @@ $(() => {
             alert('error')
         })
     }
-    const breweryBeersDb = () => {
+    const breweryBeersDb = (breweryId) => {
         $.ajax({
             url: "https://sandbox-api.brewerydb.com/v2/brewery/" + breweryId + "/beers/?key=810aa77f346d134a1c964135c4564018"
 
@@ -121,9 +115,9 @@ $(() => {
 
         $('#col2').append($resultsList.append($description).append($established))
         //col3 elements.
-        breweryId = brewery.id
+        let breweryId = brewery.id
         $('#col3').append('<h3>').html('Beers brewed by ' + brewery.nameShortDisplay)
-        breweryBeersDb()
+        breweryBeersDb(breweryId)
         // console.log(breweryBeers[0]);
         // $('#col3').html(breweryBeers[0].name)
         //clear the ajax Variables
@@ -131,7 +125,7 @@ $(() => {
     }
 
     const addBeerList = (data) => {
-        let beers = data.data;
+        const beers = data.data;
         console.log(beers.length);
         const $beerList = $('<ul>')
         $('#col3').append($beerList)
@@ -142,19 +136,19 @@ $(() => {
     }
 
     $('#beerBtn').on('click', () => {
-        searchInput = $('input').val()
-        searchBtn   = 'beers'
+        const searchInput = $('input').val()
+        const searchBtn   = 'beers'
         $('input').val('')
         $('.col').empty()
-        beerDb()
+        beerDb(searchBtn, searchInput)
     })
 
     $('#breweryBtn').on('click', () => {
-        searchInput = $('input').val();
-        searchBtn = 'breweries'
+        const searchInput = $('input').val();
+        const searchBtn = 'breweries'
         $('input').val('');
         $('.col').empty()
-        beerDb()
+        beerDb(searchBtn, searchInput)
     })
 
     $('#col3').on('click','.breweryBeers',(event) => {
