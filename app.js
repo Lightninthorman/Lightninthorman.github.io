@@ -12,9 +12,7 @@ $(() => {
 
             }).then(
                 (data) =>{
-                        console.log(data);
-                        for(let i = 0; i < data.data.length;i++)
-                        console.log(data.data[i].name);
+                    $('#col1').append($('<img>').attr('src',data.data[0].labels.contentAwareLarge))
 
             },
             (error) => {
@@ -25,7 +23,7 @@ $(() => {
     $('#beerBtn').on('click', () => {
         searchBtn='beers'
         searchInput = $('input').val()
-        $(this).val('')
+        $('input').val('')
         runDb()
     })
 
