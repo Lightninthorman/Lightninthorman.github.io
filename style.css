@@ -55,17 +55,22 @@ main{
 
 }
 
-/* @media (min-width: 600px){
+@media screen and (min-width: 600px){
+    header{
+        width: 100%
+    }
 
     main{
         margin: 20px auto;
-        width: 500px;
+        width: 100%;
         display: flex;
-        justify-content: space-between;
+        flex-flow: row wrap;
+        justify-content: space-around;
+        align-items: flex-start;
 
     }
 
     .col{
         width: 32%;
 
-    } */
+    }

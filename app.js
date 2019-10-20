@@ -9,7 +9,7 @@ $(() => {
     //=====
     //AJAX
     //=====
-    const beerDb = (searchBtn, searchInput) => {
+    const beerDb = (dynamicSearch,searchBtn, searchInput) => {
         if(searchInput === ""){
             return
         }
@@ -18,17 +18,27 @@ $(() => {
 
         }).then(
             (data) =>{
-
-
-                if(searchBtn === 'beers'){
-                    beerCheck(data);
-                }else if(searchBtn === 'breweries'){
-                    breweryCheck(data);
+                if(dynamicSearch === true){
+                    if(data.data.length > 1){
+                        searchCheck(data)
+                    }else{
+                        $('.col').empty()
+                        beerCheck(data)
+                    }
                 }
-        },
-        (error) => {
-            alert('error')
-        })
+
+                if(dynamicSearch === false){
+                    if(searchBtn === 'beers'){
+                        beerCheck(data);
+                    }else if(searchBtn === 'breweries'){
+                        breweryCheck(data);
+                    }
+                }
+
+            },
+            (error) => {
+                alert('error')
+            })
     }
     //brewery beer list
     const breweryBeersDb = (breweryId) => {
@@ -62,6 +72,21 @@ $(() => {
 //===================
 //    Functions
 //===================
+    //=====
+    //fuction for dynamic rendering of search
+    //=====
+    const searchCheck = (data) => {
+        if(data.data == undefined){
+            console.log('no results found');
+            return
+        }else{
+            $('.col').empty()
+            const $list = ('<ul>')
+            console.log(data.data);
+        }
+
+    }
+
     //=====
     //fuction to run when searching for beer
     //=====
@@ -149,7 +174,7 @@ $(() => {
     //=====
     //function to add beer list on the brewery page
     //=====
-        const addBeerList = (data) => {
+    const addBeerList = (data) => {
         const beers = data.data;
         console.log(beers.length);
         const $beerList = $('<ul>')
@@ -191,34 +216,49 @@ $(() => {
     //===================
     //    Events
     //===================
+    $('input').on('keyup', () => {
+        const dynamicSearch = true
+        const searchBtn = 'beers'
+        const searchInput = $('input').val();
+        if(searchInput.length >= 3){
+            beerDb(dynamicSearch, searchBtn, searchInput)
+        }else{
+            return
+        }
+    })
+
     $('#beerBtn').on('click', () => {
+        const dynamicSearch = false
         const searchInput = $('input').val()
         const searchBtn   = 'beers'
         $('input').val('');
         $('.col').empty();
-        beerDb(searchBtn, searchInput)
+        beerDb(dynamicSearch, searchBtn, searchInput)
     })
 
     $('#breweryBtn').on('click', () => {
+        const dynamicSearch = false
         const searchInput = $('input').val();
         const searchBtn = 'breweries'
         $('input').val('');
         $('.col').empty();
-        beerDb(searchBtn, searchInput)
+        beerDb(dynamicSearch, searchBtn, searchInput)
     })
     //click on image or brewery name on beer search page and go to brewery page
     $('#col3').on('click','.beerPageBreweryInfo', (event) => {
+        const dynamicSearch = false
         const searchInput = $(event.target).attr('data-brewery')
         const searchBtn   = 'breweries'
         $('.col').empty();;
-        beerDb(searchBtn, searchInput)
+        beerDb(dynamicSearch, searchBtn, searchInput)
     })
     //click on a beer in the beer list on the brewery page and go to that beer page
     $('#col3').on('click','.breweryBeers',(event) => {
+        const dynamicSearch = false
         const searchInput = $(event.target).html()
         const searchBtn   = 'beers'
-        $('.col').empty();;
-        beerDb(searchBtn, searchInput)
+        $('.col').empty();
+        beerDb(dynamic, searchBtn, searchInput)
     })
 
     //click on a hop and modal pops up with hop information
