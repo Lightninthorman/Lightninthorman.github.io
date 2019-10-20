@@ -108,30 +108,34 @@ $(() => {
                 $option.attr('data-button',searchBtn)
                 $($list).append($option)
             }
-            //this code is so wet, but still, it checks if there is only one result and then loads that result.
-            const breweryResults = $('#col2').children().eq(0).children()
-            const beerResults = $('#col2').children().eq(1).children()
-            console.log(breweryResults.length);
-            if(breweryResults.length === 1 && beerResults.length === 0 ){
-                const dynamicSearch = false
-                const searchInput = $('input').val();
-                const searchBtn = 'breweries'
-                $('input').val('');
-                $('.col').empty();
-                beerDb(dynamicSearch, searchBtn, searchInput)
-                return
-            }else if(beerResults.length === 1 && breweryResults.length === 0 ){
-                const dynamicSearch = false
-                const searchInput = $('input').val();
-                const searchBtn = 'beers'
-                $('input').val('');
-                $('.col').empty();
-                beerDb(dynamicSearch, searchBtn, searchInput)
-                return
-            }
-
         }
+        //wait until both the brewery and beer search results have loaded before seeing if there is only one result.
+        if($('#col2').children().length > 1){
+            oneResultFound()
+        }
+    }
 
+    const oneResultFound = () => {
+        //this code is so wet, but still, it checks if there is only one result and then loads that result.
+        const result1 = $('#col2').children().eq(0).children()
+        const result2 = $('#col2').children().eq(1).children()
+        if(result1.length === 1 && result2.length === 0 ){
+            const dynamicSearch = false
+            const searchInput = $('input').val();
+            const searchBtn = $result1.eq(0).attr('data-button')
+            $('input').val('');
+            $('.col').empty();
+            beerDb(dynamicSearch, searchBtn, searchInput)
+            return
+        }else if(result2.length === 1 && result1.length === 0 ){
+            const dynamicSearch = false
+            const searchInput = $('input').val();
+            const searchBtn = result2.eq(0).attr('data-button')
+            $('input').val('');
+            $('.col').empty();
+            beerDb(dynamicSearch, searchBtn, searchInput)
+            return
+        }
     }
 
     //=====
@@ -275,6 +279,7 @@ $(() => {
                 const searchBtn = searchBtnOptions[i]
                 beerDb(dynamicSearch, searchBtn, searchInput)
             }
+
         }else{
             return
         }
