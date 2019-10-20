@@ -19,20 +19,32 @@ $(() => {
         }).then(
             (data) =>{
                 if(dynamicSearch === true){
-                    if(data.data.length > 1){
-                        searchCheck(data)
-                    }else{
-                        $('.col').empty()
-                        beerCheck(data)
-                        return
-                    }
+                    // if(data.data === undefined){
+                        searchCheck(data, searchBtn)
+                //     }else{
+                //             searchCheck(data,searchBtn)
+                //             return
+                //         // else{
+                //         //     if(searchBtn === 'beers'){
+                //         //         $('.col').empty()
+                //         //         beerCheck(data)
+                //         //         return
+                //         //     }else{
+                //         //         $('.col').empty()
+                //         //         breweryCheck(data)
+                //         //         return
+                //         //     }
+                //         // }
+                //     }
                 }
 
                 if(dynamicSearch === false){
                     if(searchBtn === 'beers'){
                         beerCheck(data);
+                        return
                     }else if(searchBtn === 'breweries'){
                         breweryCheck(data);
+                        return
                     }
                 }
 
@@ -66,7 +78,7 @@ $(() => {
                 hopModal(data)
         },
         (error) => {
-            alert('error')
+
         })
 
     }
@@ -76,23 +88,47 @@ $(() => {
     //=====
     //fuction for dynamic rendering of search
     //=====
-    const searchCheck = (data) => {
-        const searching = data.data
-        $('.col').empty()
-        console.log(searching);
-        if(searching == undefined){
-            console.log('no results found');
+    const searchCheck = (data,searchBtn) => {
+
+
+
+        if(data.data == undefined){
+            $('#col2').append($('<ul>').html('No results for ' + searchBtn +' found'));
             return
         }else{
-            const $list = $('<ul>').html('Search Results:')
+            const searching = data.data
+            const $list = $('<ul>').html('Search results for ' + searchBtn +':')
+            // console.log(searching);
+
             $('#col2').append($list)
             for(i = 0; i < searching.length; i++){
                 const $option = $('<li>').html(searching[i].name)
                 $option.addClass('searchList')
                 $option.attr('data-name', searching[i].name)
+                $option.attr('data-button',searchBtn)
                 $($list).append($option)
             }
-
+            //this code is so wet, but still, it checks if there is only one result and then loads that result.
+            const breweryResults = $('#col2').children().eq(0).children()
+            const beerResults = $('#col2').children().eq(1).children()
+            console.log(breweryResults.length);
+            if(breweryResults.length === 1 && beerResults.length === 0 ){
+                const dynamicSearch = false
+                const searchInput = $('input').val();
+                const searchBtn = 'breweries'
+                $('input').val('');
+                $('.col').empty();
+                beerDb(dynamicSearch, searchBtn, searchInput)
+                return
+            }else if(beerResults.length === 1 && breweryResults.length === 0 ){
+                const dynamicSearch = false
+                const searchInput = $('input').val();
+                const searchBtn = 'beers'
+                $('input').val('');
+                $('.col').empty();
+                beerDb(dynamicSearch, searchBtn, searchInput)
+                return
+            }
 
         }
 
@@ -226,16 +262,19 @@ $(() => {
 
 
 
-    //===================
-    //    Events
-    //===================
+//===================
+//    Events
+//===================
     $('input').on('keyup', () => {
+        $('.col').empty()
         const dynamicSearch = true
-
+        const searchBtnOptions = ['beers','breweries']
+        const searchInput = $('input').val();
         if(searchInput.length >= 3){
-            const searchBtn = 'beers'
-            const searchInput = $('input').val();
-            beerDb(dynamicSearch, searchBtn, searchInput)
+            for(let i = 0; i < searchBtnOptions.length; i++){
+                const searchBtn = searchBtnOptions[i]
+                beerDb(dynamicSearch, searchBtn, searchInput)
+            }
         }else{
             return
         }
@@ -245,14 +284,19 @@ $(() => {
     $('body').on('click','.searchList',(event) => {
         const dynamicSearch = false
         const searchInput = $(event.target).attr('data-name')
-        const searchBtn   = 'beers'
+        const searchBtn = $(event.target).attr('data-button')
         $('input').val('');
         $('.col').empty();
         beerDb(dynamicSearch, searchBtn, searchInput)
     })
 
     $('.beerBtn').on('click', () => {
-
+        const dynamicSearch = false
+        const searchInput = $('input').val();
+        const searchBtn = 'beers'
+        $('input').val('');
+        $('.col').empty();
+        beerDb(dynamicSearch, searchBtn, searchInput)
     })
 
     $('.breweryBtn').on('click', () => {
@@ -272,7 +316,7 @@ $(() => {
         beerDb(dynamicSearch, searchBtn, searchInput)
     })
     //click on a beer in the beer list on the brewery page and go to that beer page
-    $('#col3').on('click','.breweryBeers',(event) => {
+    $('.col').on('click','.breweryBeers',(event) => {
         const dynamicSearch = false
         const searchInput = $(event.target).html()
         const searchBtn   = 'beers'
