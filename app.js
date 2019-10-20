@@ -24,6 +24,7 @@ $(() => {
                     }else{
                         $('.col').empty()
                         beerCheck(data)
+                        return
                     }
                 }
 
@@ -76,13 +77,23 @@ $(() => {
     //fuction for dynamic rendering of search
     //=====
     const searchCheck = (data) => {
-        if(data.data == undefined){
+        const searching = data.data
+        $('.col').empty()
+        console.log(searching);
+        if(searching == undefined){
             console.log('no results found');
             return
         }else{
-            $('.col').empty()
-            const $list = ('<ul>')
-            console.log(data.data);
+            const $list = $('<ul>').html('Search Results:')
+            $('#col2').append($list)
+            for(i = 0; i < searching.length; i++){
+                const $option = $('<li>').html(searching[i].name)
+                $option.addClass('searchList')
+                $option.attr('data-name', searching[i].name)
+                $($list).append($option)
+            }
+
+
         }
 
     }
@@ -93,7 +104,7 @@ $(() => {
     const beerCheck = (data) => {
         //verify if any search results were found
         if(data.data == undefined){
-            $('#col2').html('No results found')
+            $('#col2').html('No beer results found')
             return
         }
         let beer = data.data[0]
@@ -143,7 +154,7 @@ $(() => {
     const breweryCheck = (data) => {
         //verify if any search results were found
         if(data.data == undefined){
-            $('#col2').html('No results found')
+            $('#col2').html('No brewery results found')
             return
         }
 
@@ -191,7 +202,9 @@ $(() => {
     const hopModal = (data) => {
         $('.hopDisplay').empty();
         const hop = data.data
-        $('.hopModal').css('height', $('body').height() + 40 +'px')
+        //get grey background to cover the whole background
+        $('.hopModal').css('height', $(window).height() + 'px')
+
         $('.hopModal').css('display','block')
         let countryOrigin = ""
         let description = hop.description
@@ -218,25 +231,31 @@ $(() => {
     //===================
     $('input').on('keyup', () => {
         const dynamicSearch = true
-        const searchBtn = 'beers'
-        const searchInput = $('input').val();
+
         if(searchInput.length >= 3){
+            const searchBtn = 'beers'
+            const searchInput = $('input').val();
             beerDb(dynamicSearch, searchBtn, searchInput)
         }else{
             return
         }
     })
 
-    $('#beerBtn').on('click', () => {
+    //click event for dynamic search Results
+    $('body').on('click','.searchList',(event) => {
         const dynamicSearch = false
-        const searchInput = $('input').val()
+        const searchInput = $(event.target).attr('data-name')
         const searchBtn   = 'beers'
         $('input').val('');
         $('.col').empty();
         beerDb(dynamicSearch, searchBtn, searchInput)
     })
 
-    $('#breweryBtn').on('click', () => {
+    $('.beerBtn').on('click', () => {
+
+    })
+
+    $('.breweryBtn').on('click', () => {
         const dynamicSearch = false
         const searchInput = $('input').val();
         const searchBtn = 'breweries'
@@ -258,7 +277,7 @@ $(() => {
         const searchInput = $(event.target).html()
         const searchBtn   = 'beers'
         $('.col').empty();
-        beerDb(dynamic, searchBtn, searchInput)
+        beerDb(dynamicSearch, searchBtn, searchInput)
     })
 
     //click on a hop and modal pops up with hop information

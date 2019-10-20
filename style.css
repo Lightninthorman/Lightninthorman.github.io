@@ -30,10 +30,10 @@ main{
     padding: 0 4px;
 }
 
-.breweryBeers, .hopList{
+.breweryBeers, .hopList, .searchList{
     cursor: pointer;
 }
-.breweryBeers:hover, .hopList:hover{
+.breweryBeers:hover, .hopList:hover, .searchList:hover{
     color:red;
 }
 
@@ -49,7 +49,7 @@ main{
 .hopDisplay{
     position:fixed;
     width:50%;
-    margin:25% 25%;
+    margin:20% 25%;
     padding:40px;
     background-color: white;
 
