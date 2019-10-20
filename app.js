@@ -19,23 +19,7 @@ $(() => {
         }).then(
             (data) =>{
                 if(dynamicSearch === true){
-                    // if(data.data === undefined){
                         searchCheck(data, searchBtn)
-                //     }else{
-                //             searchCheck(data,searchBtn)
-                //             return
-                //         // else{
-                //         //     if(searchBtn === 'beers'){
-                //         //         $('.col').empty()
-                //         //         beerCheck(data)
-                //         //         return
-                //         //     }else{
-                //         //         $('.col').empty()
-                //         //         breweryCheck(data)
-                //         //         return
-                //         //     }
-                //         // }
-                //     }
                 }
 
                 if(dynamicSearch === false){
@@ -148,6 +132,7 @@ $(() => {
             return
         }
         let beer = data.data[0]
+
         //verify if label data provided
         if(beer.labels == undefined){
             // if no label provided post a cartoon picture of beer
@@ -186,6 +171,9 @@ $(() => {
         let $breweryName = $('<p>').html(beer.breweries[0].name).attr('data-brewery',beer.breweries[0].name).addClass('beerPageBreweryInfo')
         let $website = $('<a>').attr('href',beer.breweries[0].website).html(beer.breweries[0].website)
         $('#col3').append($breweryImg).append($breweryName).append($website)
+        // add search item to previoius search list
+        localStorage.setItem('name', beer.name)
+        searchList()
     }
 
     //=====
@@ -220,8 +208,13 @@ $(() => {
         let breweryId = brewery.id
         $('#col3').append('<h3>').html('Beers brewed by ' + brewery.nameShortDisplay)
         breweryBeersDb(breweryId)
+        // add search item to previoius search list
+
+        searchList(brewery.name, 'beers')
 
     }
+
+
     //=====
     //function to add beer list on the brewery page
     //=====
@@ -264,7 +257,26 @@ $(() => {
 
     }
 
+    const searchList = (name, button) => {
+        const storage = [{
+            'name': name,
+            'button':button        
+        }]
+        // if(window.localStorage.length > 5){
+        //     window.localStorage.pop()
+        // }
+        // if(localStorage === undefined){
+            window.localStorage.setItem(JSON.stringify('name',name, 'button', button))
+        // }
+        console.log(JSON.parse(window.localStorage.getItem('name')))
+        // for(let i = 0; i < window.localStorage.length; i++){
+        //     console.log(JSON.parse(window.localStorage[i].name));
+        // }
+    }
 
+    //=====
+    //function to populate search div
+    //=====
 
 //===================
 //    Events
