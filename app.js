@@ -6,6 +6,9 @@
 //    On-Load
 //===================
 $(() => {
+
+    $('body').css('height', $(window).height() + 'px')
+
     //=====
     //AJAX
     //=====
@@ -75,7 +78,8 @@ $(() => {
     const searchCheck = (data,searchBtn) => {
 
 
-
+        $('#col1').css('display','none')
+        $('#col3').css('display','none')
         if(data.data == undefined){
             $('#col2').append($('<ul>').html('No results for ' + searchBtn +' found'));
             return
@@ -93,6 +97,11 @@ $(() => {
                 $($list).append($option)
             }
         }
+        if($(document).height() > $(window).height()){
+            $('body').css('height', $(document).height() + 'px')
+        }else{
+            $('body').css('height', $(window).height() + 'px')
+        }
         //wait until both the brewery and beer search results have loaded before seeing if there is only one result.
         if($('#col2').children().length > 1){
             oneResultFound()
@@ -100,10 +109,13 @@ $(() => {
     }
 
     const oneResultFound = () => {
+
         //this code is so wet, but still, it checks if there is only one result and then loads that result.
         const result1 = $('#col2').children().eq(0).children()
         const result2 = $('#col2').children().eq(1).children()
         if(result1.length === 1 && result2.length === 0 ){
+            $('#col1').css('display','flex')
+            $('#col3').css('display','flex')
             const dynamicSearch = false
             const searchInput = $('input').val();
             const searchBtn = $result1.eq(0).attr('data-button')
@@ -112,12 +124,15 @@ $(() => {
             beerDb(dynamicSearch, searchBtn, searchInput)
             return
         }else if(result2.length === 1 && result1.length === 0 ){
+            $('#col1').css('display','flex')
+            $('#col3').css('display','flex')
             const dynamicSearch = false
             const searchInput = $('input').val();
             const searchBtn = result2.eq(0).attr('data-button')
             $('input').val('');
             $('.col').empty();
             beerDb(dynamicSearch, searchBtn, searchInput)
+            resize()
             return
         }
     }
@@ -126,11 +141,16 @@ $(() => {
     //fuction to run when searching for beer
     //=====
     const beerCheck = (data) => {
+
         //verify if any search results were found
         if(data.data == undefined){
             $('#col2').html('No beer results found')
             return
         }
+        $('#col1').css('display','flex')
+        $('#col3').css('display','flex')
+        console.log($(window).height() + " window");
+        console.log($('body').height());
         let beer = data.data[0]
 
         //verify if label data provided
@@ -138,17 +158,29 @@ $(() => {
             // if no label provided post a cartoon picture of beer
             let $labelImg = $('<img>').attr('src','imgs/beerNoImage.png')
             $('#col1').append($labelImg)
+            resize()
+        }else if(beer.labels.contentAwareMedium == undefined){
+            let $labelImg = $('<img>').attr('src',beer.labels.medium)
+            $('#col1').append($labelImg)
         }else{
             // if label is provided then access it and append it to the column
             let $labelImg = $('<img>').attr('src',beer.labels.contentAwareMedium)
             $('#col1').append($labelImg)
         }
+        resize()
+        console.log($(window).height() + " window after");
+        console.log($('body').height());
         let $beerName = $('<h3>').html(beer.name + '  |  abv. ' + beer.abv + '%')
         $('#col2').append($beerName)
         //create the list of data points to return
         let $resultsList = $('<ul>')
-        let $style = $('<li>').html('Style: <br>' + beer.style.name)
-        let $description = $('<li>').html('Description: <br>' + beer.description)
+        let $style =  $('<li>')
+        if(beer.style === undefined){
+             $style = $style.html('<span>Style:</span> No style provided')
+        }else{
+             $style = $style.html('<span>Style:</span> <br>' + beer.style.name)
+        }
+        let $description = $('<li>').html('<span>Description:</span> <br>' + beer.description)
         let $ibu = $('<li>').html('IBU: ' + beer.ibu)
 
         //append list to column
@@ -171,9 +203,11 @@ $(() => {
         let $breweryName = $('<p>').html(beer.breweries[0].name).attr('data-brewery',beer.breweries[0].name).addClass('beerPageBreweryInfo')
         let $website = $('<a>').attr('href',beer.breweries[0].website).html(beer.breweries[0].website)
         $('#col3').append($breweryImg).append($breweryName).append($website)
+        //ensure the backgound covers the whole page with results
+        resize()
         // add search item to previoius search list
-        localStorage.setItem('name', beer.name)
-        searchList()
+        // localStorage.setItem('name', beer.name)
+        // searchList()
     }
 
     //=====
@@ -185,6 +219,8 @@ $(() => {
             $('#col2').html('No brewery results found')
             return
         }
+        $('#col1').css('display','flex')
+        $('#col3').css('display','flex')
 
         let brewery = data.data[0]
         //col1 elements
@@ -207,10 +243,14 @@ $(() => {
         //col3 elements.
         let breweryId = brewery.id
         $('#col3').append('<h3>').html('Beers brewed by ' + brewery.nameShortDisplay)
+        resize()
         breweryBeersDb(breweryId)
+        resize()
+        //ensure the backgound covers the whole page with results
+
         // add search item to previoius search list
 
-        searchList(brewery.name, 'beers')
+        // searchList(brewery.name, 'beers')
 
     }
 
@@ -227,6 +267,7 @@ $(() => {
             $beerList.append($('<li>').html(beers[i].name).addClass('breweryBeers'))
         }
         $('#col3').append($beerList)
+        resize()
     }
 
     //=====
@@ -253,31 +294,40 @@ $(() => {
         //display data (or lack there of) in the modal
         $('.hopDisplay').append($('<h3>').html(hop.name))
         $('.hopDisplay').append($('<p>').html("Country of Origin: " + countryOrigin + "<br></br>" + description))
-        $('.hopDisplay').append($('<button>').attr('id','closeModal').html('Close'))
+        $('.hopDisplay').append($('<button>').attr('id','closeModal').addClass('button').html('Close'))
+        $('.hopModal').css('height', $(document).height());
 
     }
 
-    const searchList = (name, button) => {
-        const storage = [{
-            'name': name,
-            'button':button        
-        }]
-        // if(window.localStorage.length > 5){
-        //     window.localStorage.pop()
-        // }
-        // if(localStorage === undefined){
-            window.localStorage.setItem(JSON.stringify('name',name, 'button', button))
-        // }
-        console.log(JSON.parse(window.localStorage.getItem('name')))
-        // for(let i = 0; i < window.localStorage.length; i++){
-        //     console.log(JSON.parse(window.localStorage[i].name));
-        // }
+    // const searchList = (name, button) => {
+    //     const storage = [{
+    //         'name': name,
+    //         'button':button
+    //     }]
+    //     // if(window.localStorage.length > 5){
+    //     //     window.localStorage.pop()
+    //     // }
+    //     // if(localStorage === undefined){
+    //         window.localStorage.setItem(JSON.stringify('name',name, 'button', button))
+    //     // }
+    //     console.log(JSON.parse(window.localStorage.getItem('name')))
+    //     // for(let i = 0; i < window.localStorage.length; i++){
+    //     //     console.log(JSON.parse(window.localStorage[i].name));
+    //     // }
+    // }
+
+    //=====
+    //function to resize background
+    //=====
+    const resize = () => {
+        if(($('header').height() + $('main').height() + 60) < $(window).height()){
+            $('body').css('height', $(window).height() + 'px')
+        }else{
+            $('body').css('height', ($('header').height() + $('main').height()) + 80 +'px')
+        }
+
+
     }
-
-    //=====
-    //function to populate search div
-    //=====
-
 //===================
 //    Events
 //===================
@@ -290,6 +340,7 @@ $(() => {
             for(let i = 0; i < searchBtnOptions.length; i++){
                 const searchBtn = searchBtnOptions[i]
                 beerDb(dynamicSearch, searchBtn, searchInput)
+
             }
 
         }else{
@@ -329,7 +380,7 @@ $(() => {
         const dynamicSearch = false
         const searchInput = $(event.target).attr('data-brewery')
         const searchBtn   = 'breweries'
-        $('.col').empty();;
+        $('.col').empty();
         beerDb(dynamicSearch, searchBtn, searchInput)
     })
     //click on a beer in the beer list on the brewery page and go to that beer page
@@ -349,11 +400,12 @@ $(() => {
         hopsDb(hopId)
     })
 
-    //either of these two options will close the hops modal window
+    //this will close the hops modal window
     $('body').on('click','#closeModal', () => {
         $('.hopModal').css('display','none')
     })
 
+    $(window).on('resize', resize)
     // $('.hopModal').on('click', () => {
     //     $('.hopModal').toggle()
     // })

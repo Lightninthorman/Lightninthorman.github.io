@@ -1,27 +1,120 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    /* background-color: #E98C01; */
+    margin: 0;
+    background-image: linear-gradient(#FFA319,#E98C01,#F5560C,#C2440A);
+    font-family: 'Tillana', sans-serif;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* display: flex;
+    flex-direction: column; */
+
+    height:100%;
+
+}
+
 header{
     margin: 20px auto;
-    width:480px;
+    width:100%;
     text-align: center;
+    color:#3D2500;
 
+}
+
+
+h1{
+    display:inline;
+    font-family: 'Kavoon', cursive;
+    font-size: 36px;
+}
+
+h3{
+    margin: 0 auto;
+    padding: 15px 30px;
+    text-align: center;
 }
 
 input{
     display: block;
     margin: 0 auto 20px;
+    height:35px;
+    width:140px;
+    border-radius: 2px;
+    border: 2px solid #AB481A;
+    box-shadow: 2px 3px 3px #6E5C42;
+    padding-left: 5px;
+    font-family: 'Tillana', sans-serif;
+    font-size: 18px;
+
 }
 
 
 main{
-    margin: 20px auto;
+    margin: 20px auto 0;
     width: 480px;
     display: flex;
     align-items: center;
     flex-direction: column;
+    color: #331F00;
+    align-items: center;
+
 
 }
 
-.col{
+span{
+    font-weight: bold;
+    text-decoration: underline; 
+}
 
+ul{
+    list-style-type: none;
+}
+
+.title{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.title img{
+    height: 60px;
+}
+
+.button{
+    font-family: 'Tillana', sans-serif;
+    font-size: 14px;
+    padding: 7px 10px;
+    border-radius: 10px;
+    margin: 0 10px;
+    box-shadow: 2px 3px 3px #6E5C42;
+    border: 2px solid #AB481A;
+}
+
+.button:hover{
+    background-color:#F7783E;
+    color:#86F957;
+    border:2px solid #86F957;
+}
+
+.col{
+    margin-top: 15px;
+    width: 80%;
+    display:flex;
+    flex-direction:column;
+    background-color: rgba(240,202,144,0.4);
+    border-radius: 5px;
+    overflow:hidden;
+}
+
+.col img{
+    border-radius: 5px;
+    margin: 15px auto;
+    width: 70%;
+    height:auto;
 }
 
 .hopList{
@@ -42,7 +135,7 @@ main{
     position: absolute;
     top: 0;
     left: 0;
-    width:100%;
+    width: 100%;
     background-color: rgba(192,192,192,0.8);
 }
 
@@ -55,9 +148,24 @@ main{
 
 }
 
-@media screen and (min-width: 600px){
+#beerBtn, #BreweryBtn
+
+#col1, #col3{
+    text-align: center;
+}
+
+@media screen and (min-width: 700px){
     header{
         width: 100%
+    }
+
+    h1{
+        font-size: 42px;
+    }
+
+    input{
+        height:45px;
+        width:200px;
     }
 
     main{
@@ -66,7 +174,8 @@ main{
         display: flex;
         flex-flow: row wrap;
         justify-content: space-around;
-        align-items: flex-start;
+        align-items: stretch;
+        align-content: stretch;
 
     }
 

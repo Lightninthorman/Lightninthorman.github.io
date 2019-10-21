@@ -2,9 +2,9 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <!-- Content-Security-Policy: upgrade-insecure-requests -->
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Beer Detective</title>
+        <link href="https://fonts.googleapis.com/css?family=Kavoon|Tillana&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
         <script
             src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -15,12 +15,16 @@
     </head>
     <body>
         <header>
-            <h1>Beer Detective</h1>
-            <input type="text" name="search" value="">
-            <button type="submit" class="beerBtn">Find my Beer!</button>
-            <button type="submit" class ="breweryBtn">Find my Brewery!</button>
+            <div class="title">
+                <img src="imgs/beer(1).png" alt="">
+                <h1>Beer Detective</h1>
+                <img src="imgs/magnifying_glass(1).png" alt="">
+            </div>
+            <input type="text" name="search" placeholder = " Investigate">
+            <button type="submit" class="beerBtn button">Find my Beer!</button>
+            <button type="submit" class ="breweryBtn button">Find my Brewery!</button>
             <div class="searches">
-                <button type="button" id = 'clear' name="button">Clear</button>
+                <!-- <button type="button" id = 'clear' name="button">Clear</button> -->
             </div>
         </header>
         <main>
