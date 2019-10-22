@@ -224,7 +224,7 @@ $(() => {
 
         let brewery = data.data[0]
         //col1 elements
-        let $breweryImg = $('<img>').attr('src',brewery.images.squareMedium).css('display','block');
+        let $breweryImg = $('<a>').attr('href',brewery.website).append($('<img>').attr('src',brewery.images.squareMedium).css('display','block'));
         let $website = $('<a>').attr('href',brewery.website).html(brewery.website);
         //build the address from multiple keys in the API
         let $location = $('<a>').html(brewery.locations[0].streetAddress + '</br>' + brewery.locations[0].locality + ', ' + brewery.locations[0].region + ' ' + brewery.locations[0].postalCode).attr('href','https://www.google.com/maps/search/?api=1&query=' + brewery.locations[0].streetAddress + brewery.locations[0].locality + brewery.locations[0].region + brewery.locations[0].postalCode )
@@ -237,7 +237,7 @@ $(() => {
         //create the list of data points to return
         let $resultsList = $('<ul>')
         let $description = $('<li>').html(brewery.description)
-        let $established = $('<li>').html('Established: ' + brewery.established)
+        let $established = $('<li>').html('<br><span>Established:</span> ' + brewery.established)
 
         $('#col2').append($resultsList.append($description).append($established))
         //col3 elements.
