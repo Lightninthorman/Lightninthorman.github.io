@@ -33,14 +33,18 @@ h1{
 
 h3{
     margin: 0 auto;
-    padding: 15px 30px;
+    padding: 25px 30px 0;
     margin-bottom: 0;
     text-align: center;
+    font-size: 30px;
+    /*  */
 }
 
 a{
     color: #3D2500;
     text-decoration: none;
+    font-size: 20px;
+    /*  */
 }
 
 a:hover, .beerPageBreweryInfo:hover{
@@ -51,21 +55,26 @@ a:hover, .beerPageBreweryInfo:hover{
 input{
     display: block;
     margin: 0 auto 20px;
-    height:35px;
-    width:140px;
+    height:45px;
+    width:150px;
     border-radius: 2px;
     border: 2px solid #AB481A;
     box-shadow: 2px 3px 3px #6E5C42;
     padding-left: 5px;
     font-family: 'Tillana', sans-serif;
     font-size: 18px;
+    background-color: #F7783E;
 
+}
+
+input:focus{
+    background-color: #F9AC89;
 }
 
 
 main{
     margin: 20px auto 0;
-    width: 480px;
+    width: 95%;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -84,6 +93,13 @@ ul{
     list-style-type: none;
     padding: 10px;
     margin-top: 0;
+    font-size: 20px;
+    /*  */
+}
+
+p{
+    padding: 10px;
+    font-size: 20px;
 }
 
 .title{
@@ -99,34 +115,46 @@ ul{
 
 .button{
     font-family: 'Tillana', sans-serif;
-    font-size: 14px;
+    font-size: 20px;
     padding: 7px 10px;
     border-radius: 10px;
     margin: 0 10px;
     box-shadow: 2px 3px 3px #6E5C42;
     border: 2px solid #AB481A;
+    background-color: #FC3732;
 }
 
 .button:hover{
     background-color:#F7783E;
     color:#86F957;
     border:2px solid #86F957;
+    transform: scale(1.1);
+}
+
+.button:active{
+    /* transform: translateY(3px); */
+    transform: scale(1);
+    box-shadow: 1px 1px 3px #262017;
+}
+
+.button:focus{
+    outline: none;
 }
 
 .col{
     margin-top: 15px;
-    width: 80%;
+    width: 95%;
     display:flex;
     flex-direction:column;
     background-color: rgba(240,202,144,0.4);
     border-radius: 5px;
     overflow:hidden;
-    box-shadow: 2px 3px 7px #6E5C42;
+    box-shadow: 2px 2px 5px #3B3123;
 }
 
 .col img{
     border-radius: 5px;
-    margin: 15px auto;
+    margin: 25px auto;
     width: 70%;
     height:auto;
     box-shadow: 2px 3px 3px #6E5C42;
@@ -143,6 +171,7 @@ ul{
     padding: 0 10px;
     text-align: center;
     margin: 0 auto;
+    font-size: 20px;
 }
 .hopList:hover{
     border-radius: 20px;
@@ -180,7 +209,7 @@ ul{
     overflow-y:auto;
     margin:10% 25%;
     padding:40px;
-    background-color: #CF7C00;
+    background-color: #F9AC89;
     border-radius: 20px;
 
 }
@@ -189,10 +218,15 @@ ul{
     display:inline-block;
 }
 
+.hopDisplay button{
+    background-color: #CC7147;
+}
 /* #beerBtn, #BreweryBtn */
 
 #col1, #col3{
     text-align: center;
+    font-size: 20px;
+    /*  */
 }
 
 
@@ -219,6 +253,10 @@ ul{
         align-items: stretch;
         align-content: stretch;
 
+    }
+
+    .button{
+        font-size: 16px;
     }
 
     .col{

@@ -242,7 +242,7 @@ $(() => {
         $('#col2').append($resultsList.append($description).append($established))
         //col3 elements.
         let breweryId = brewery.id
-        $('#col3').append('<h3>').html('<span>Beers brewed by</span> ' + brewery.nameShortDisplay)
+        $('#col3').append('<h3>').html('<span>Beers brewed by</span> ' +'<span>' +  brewery.nameShortDisplay + '</span>')
         resize()
         breweryBeersDb(breweryId)
         resize()
@@ -292,9 +292,10 @@ $(() => {
             description = "No description provided"
         }
         //display data (or lack there of) in the modal
-        $('.hopDisplay').append($('<img>').attr('src','imgs/wheatAndHops(2).png'))
+        $('.hopDisplay').append($('<img>').attr('src','imgs/wheatAndHops(3).png'))
         $('.hopDisplay').append($('<h3>').html(hop.name))
-        $('.hopDisplay').append($('<p>').html("Country of Origin: " + countryOrigin + "<br></br>" + description))
+        $('.hopDisplay').append($('<img>').attr('src','imgs/wheatAndHops(3).png'))
+        $('.hopDisplay').append($('<p>').html("<span>Country of Origin:</span> " + countryOrigin + "<br><br><span>Description:</span><br>" + description))
         $('.hopDisplay').append($('<button>').attr('id','closeModal').addClass('button').html('Close'))
         $('.hopModal').css('height', $(document).height());
 
