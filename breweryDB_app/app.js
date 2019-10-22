@@ -108,6 +108,10 @@ $(() => {
         }
     }
 
+    //=====
+    //fuction for one result found during dynamic search
+    //=====
+
     const oneResultFound = () => {
 
         //this code is so wet, but still, it checks if there is only one result and then loads that result.
@@ -152,7 +156,7 @@ $(() => {
         console.log($(window).height() + " window");
         console.log($('body').height());
         let beer = data.data[0]
-
+        searchHistory(beer.name, 'beers')
         //verify if label data provided
         if(beer.labels == undefined){
             // if no label provided post a cartoon picture of beer
@@ -214,6 +218,7 @@ $(() => {
     //fuction to run when searching for brewery
     //=====
     const breweryCheck = (data) => {
+
         //verify if any search results were found
         if(data.data == undefined){
             $('#col2').html('<span>No brewery results found</span>')
@@ -223,6 +228,7 @@ $(() => {
         $('#col3').css('display','flex')
 
         let brewery = data.data[0]
+        searchHistory(brewery.name, 'breweries')
         //col1 elements
         let $breweryImg = $('<a>').attr('href',brewery.website).append($('<img>').attr('src',brewery.images.squareMedium).css('display','block'));
         let $website = $('<a>').attr('href',brewery.website).html(brewery.website);
@@ -300,22 +306,6 @@ $(() => {
 
     }
 
-    // const searchList = (name, button) => {
-    //     const storage = [{
-    //         'name': name,
-    //         'button':button
-    //     }]
-    //     // if(window.localStorage.length > 5){
-    //     //     window.localStorage.pop()
-    //     // }
-    //     // if(localStorage === undefined){
-    //         window.localStorage.setItem(JSON.stringify('name',name, 'button', button))
-    //     // }
-    //     console.log(JSON.parse(window.localStorage.getItem('name')))
-    //     // for(let i = 0; i < window.localStorage.length; i++){
-    //     //     console.log(JSON.parse(window.localStorage[i].name));
-    //     // }
-    // }
 
     //=====
     //function to resize background
@@ -326,8 +316,30 @@ $(() => {
         }else{
             $('body').css('height', ($('header').height() + $('main').height()) + 80 +'px')
         }
+    }
 
+    const searchHistory = (searchInput,searchBtn) => {
+        let history = [];
+        $('.searchHistory').empty()
+        if(localStorage.length > 0){
+            history = JSON.parse(localStorage.getItem('search'))
+        }
+        if(history.length >= 5){
+            history.pop()
+        }
+        history.unshift({
+            name: searchInput,
+            type: searchBtn
+        })
 
+        const $searchList = $('<ul>')
+        for(let i = 0; i < history.length; i++){
+            const $search = $('<li>').html(history[i].name).attr('data-button',history[i].type)
+            $searchList.append($search)
+        }
+        $('.searchHistory').append($searchList)
+        localStorage.setItem('search',JSON.stringify(history))
+        console.log(JSON.parse(localStorage.getItem('search')));
     }
 //===================
 //    Events
@@ -356,6 +368,8 @@ $(() => {
         const searchBtn = $(event.target).attr('data-button')
         $('input').val('');
         $('.col').empty();
+        //bring user to top of page
+        window.scrollTo(0,0)
         beerDb(dynamicSearch, searchBtn, searchInput)
     })
 
@@ -382,6 +396,8 @@ $(() => {
         const searchInput = $(event.target).attr('data-brewery')
         const searchBtn   = 'breweries'
         $('.col').empty();
+        //bring user to top of page
+        window.scrollTo(0,0);
         beerDb(dynamicSearch, searchBtn, searchInput)
     })
     //click on a beer in the beer list on the brewery page and go to that beer page
@@ -390,6 +406,18 @@ $(() => {
         const searchInput = $(event.target).html()
         const searchBtn   = 'beers'
         $('.col').empty();
+        //bring user to top of page
+        window.scrollTo(0,0);
+        beerDb(dynamicSearch, searchBtn, searchInput)
+    })
+
+    $('.searchHistory').on('click',(event) => {
+        const dynamicSearch = false
+        const searchInput = $(event.target).html()
+        const searchBtn   = $(event.target).attr('data-button')
+        $('.col').empty();
+        //bring user to top of page
+        window.scrollTo(0,0);
         beerDb(dynamicSearch, searchBtn, searchInput)
     })
 
@@ -404,6 +432,12 @@ $(() => {
     //this will close the hops modal window
     $('body').on('click','#closeModal', () => {
         $('.hopModal').toggleClass('hopVisible')
+    })
+
+    $('#clear').on('click',() => {
+        $('.searchHistory').empty()
+        localStorage.clear()
+
     })
 
     $(window).on('resize', resize)
