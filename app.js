@@ -81,11 +81,11 @@ $(() => {
         $('#col1').css('display','none')
         $('#col3').css('display','none')
         if(data.data == undefined){
-            $('#col2').append($('<ul>').html('No results for ' + searchBtn +' found'));
+            $('#col2').append($('<ul>').html('No results for ' + searchBtn +' found').css({'font-weight':'bold'}));
             return
         }else{
             const searching = data.data
-            const $list = $('<ul>').html('Search results for ' + searchBtn +':')
+            const $list = $('<ul>').html('Search results for ' + searchBtn +':').css({'font-weight':'bold'});
             // console.log(searching);
 
             $('#col2').append($list)
@@ -144,7 +144,7 @@ $(() => {
 
         //verify if any search results were found
         if(data.data == undefined){
-            $('#col2').html('No beer results found')
+            $('#col2').html('<span>No beer results found</span>')
             return
         }
         $('#col1').css('display','flex')
@@ -156,9 +156,9 @@ $(() => {
         //verify if label data provided
         if(beer.labels == undefined){
             // if no label provided post a cartoon picture of beer
-            let $labelImg = $('<img>').attr('src','imgs/beerNoImage.png')
+            let $labelImg = $('<img>').attr('src','imgs/beerNoImage.png').css('box-shadow','none')
             $('#col1').append($labelImg)
-            resize()
+
         }else if(beer.labels.contentAwareMedium == undefined){
             let $labelImg = $('<img>').attr('src',beer.labels.medium)
             $('#col1').append($labelImg)
@@ -167,32 +167,32 @@ $(() => {
             let $labelImg = $('<img>').attr('src',beer.labels.contentAwareMedium)
             $('#col1').append($labelImg)
         }
-        resize()
+
         console.log($(window).height() + " window after");
         console.log($('body').height());
         let $beerName = $('<h3>').html(beer.name + '  |  abv. ' + beer.abv + '%')
         $('#col2').append($beerName)
         //create the list of data points to return
         let $resultsList = $('<ul>')
-        let $style =  $('<li>')
+        let $style =  $('<li>').addClass('aboutBeer')
         if(beer.style === undefined){
              $style = $style.html('<span>Style:</span> No style provided')
         }else{
-             $style = $style.html('<span>Style:</span> <br>' + beer.style.name)
+             $style = $style.html('<span>Style:</span><br>' + beer.style.name)
         }
-        let $description = $('<li>').html('<span>Description:</span> <br>' + beer.description)
-        let $ibu = $('<li>').html('IBU: ' + beer.ibu)
+        let $description = $('<li>').html('<span>Description:</span><br>' + beer.description).addClass('aboutBeer')
+        let $ibu = $('<li>').html('<span>IBU:</span> ' + beer.ibu).addClass('aboutBeer')
 
         //append list to column
         $('#col2').append($($resultsList).append($style).append($description).append($ibu))
         //verify if hop data provided
         if(beer.ingredients == undefined){
             //if no hop data provided add text explaining
-            $('#col2').append($('<p>').html("Hops: No hop profile provided"))
+            $('#col2').append($('<p>').html("<span>Hops:</span> No hop profile provided"))
         }else {
             //if hop data provided, loop through ingredients array and list the hops in the beer
             const hops = beer.ingredients.hops
-            const $hopProfile = $('<ul>').html('Hops: ')
+            const $hopProfile = $('<ul>').html('<span>Hops:</span> (Click on a hop to learn more about it)<br> ')
             $('#col2').append($hopProfile)
             for (i = 0; i < hops.length; i++){
                 $hopProfile.append($('<li>').text(hops[i].name + '  |').addClass('hopList').attr('data-hopId',hops[i].id))
@@ -216,7 +216,7 @@ $(() => {
     const breweryCheck = (data) => {
         //verify if any search results were found
         if(data.data == undefined){
-            $('#col2').html('No brewery results found')
+            $('#col2').html('<span>No brewery results found</span>')
             return
         }
         $('#col1').css('display','flex')
@@ -227,7 +227,7 @@ $(() => {
         let $breweryImg = $('<img>').attr('src',brewery.images.squareMedium).css('display','block');
         let $website = $('<a>').attr('href',brewery.website).html(brewery.website);
         //build the address from multiple keys in the API
-        let $location = $('<p>').html(brewery.locations[0].streetAddress + '</br>' + brewery.locations[0].locality + ', ' + brewery.locations[0].region + ' ' + brewery.locations[0].postalCode);
+        let $location = $('<a>').html(brewery.locations[0].streetAddress + '</br>' + brewery.locations[0].locality + ', ' + brewery.locations[0].region + ' ' + brewery.locations[0].postalCode).attr('href','https://www.google.com/maps/search/?api=1&query=' + brewery.locations[0].streetAddress + brewery.locations[0].locality + brewery.locations[0].region + brewery.locations[0].postalCode )
         //add all col1 data to col1
         $('#col1').append($breweryImg).append($website).append($location)
 
@@ -242,7 +242,7 @@ $(() => {
         $('#col2').append($resultsList.append($description).append($established))
         //col3 elements.
         let breweryId = brewery.id
-        $('#col3').append('<h3>').html('Beers brewed by ' + brewery.nameShortDisplay)
+        $('#col3').append('<h3>').html('<span>Beers brewed by</span> ' + brewery.nameShortDisplay)
         resize()
         breweryBeersDb(breweryId)
         resize()
@@ -292,6 +292,7 @@ $(() => {
             description = "No description provided"
         }
         //display data (or lack there of) in the modal
+        $('.hopDisplay').append($('<img>').attr('src','imgs/wheatAndHops(2).png'))
         $('.hopDisplay').append($('<h3>').html(hop.name))
         $('.hopDisplay').append($('<p>').html("Country of Origin: " + countryOrigin + "<br></br>" + description))
         $('.hopDisplay').append($('<button>').attr('id','closeModal').addClass('button').html('Close'))
@@ -406,6 +407,8 @@ $(() => {
     })
 
     $(window).on('resize', resize)
+
+    $(document).scroll(resize)
     // $('.hopModal').on('click', () => {
     //     $('.hopModal').toggle()
     // })

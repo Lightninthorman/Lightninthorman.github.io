@@ -34,7 +34,18 @@ h1{
 h3{
     margin: 0 auto;
     padding: 15px 30px;
+    margin-bottom: 0;
     text-align: center;
+}
+
+a{
+    color: #3D2500;
+    text-decoration: none;
+}
+
+a:hover, .beerPageBreweryInfo:hover{
+    color:#8A5300;
+    text-decoration: underline;
 }
 
 input{
@@ -66,11 +77,13 @@ main{
 
 span{
     font-weight: bold;
-    text-decoration: underline; 
+    text-decoration: underline;
 }
 
 ul{
     list-style-type: none;
+    padding: 10px;
+    margin-top: 0;
 }
 
 .title{
@@ -108,6 +121,7 @@ ul{
     background-color: rgba(240,202,144,0.4);
     border-radius: 5px;
     overflow:hidden;
+    box-shadow: 2px 3px 7px #6E5C42;
 }
 
 .col img{
@@ -115,20 +129,40 @@ ul{
     margin: 15px auto;
     width: 70%;
     height:auto;
+    box-shadow: 2px 3px 3px #6E5C42;
 }
+
+.aboutBeer{
+    padding-top: 20px;
+}
+
 
 .hopList{
     display: inline-block;
     list-style-type: none;
-    padding: 0 4px;
+    padding: 0 10px;
+    text-align: center;
+    margin: 0 auto;
+}
+.hopList:hover{
+    border-radius: 20px;
+    background-image: radial-gradient(rgba(194,68,10,1),rgba(194,68,10,0));
 }
 
-.breweryBeers, .hopList, .searchList{
+.searchList{
+    font-weight: normal;
+    text-decoration: none;
+}
+
+.breweryBeers, .hopList, .searchList, .beerPageBreweryInfo{
     cursor: pointer;
 }
-.breweryBeers:hover, .hopList:hover, .searchList:hover{
-    color:red;
+.breweryBeers:hover, .searchList:hover {
+    border-radius: 10px;
+    background-image: radial-gradient(rgba(194,68,10,1),rgba(194,68,10,0));
+    font-weight: bold;
 }
+
 
 .hopModal{
     display: none;
@@ -142,17 +176,25 @@ ul{
 .hopDisplay{
     position:fixed;
     width:50%;
-    margin:20% 25%;
+    height:400px;
+    overflow-y:auto;
+    margin:10% 25%;
     padding:40px;
-    background-color: white;
+    background-color: #CF7C00;
+    border-radius: 20px;
 
 }
 
-#beerBtn, #BreweryBtn
+.hopDisplay h3{
+    display:inline-block;
+}
+
+/* #beerBtn, #BreweryBtn */
 
 #col1, #col3{
     text-align: center;
 }
+
 
 @media screen and (min-width: 700px){
     header{
