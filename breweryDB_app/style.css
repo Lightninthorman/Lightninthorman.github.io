@@ -194,12 +194,13 @@ p{
 
 
 .hopModal{
-    display: none;
+    display: block;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     background-color: rgba(192,192,192,0.8);
+    transition: opacity 1s,visibility .1s;
 }
 
 .hopDisplay{
@@ -220,6 +221,17 @@ p{
 
 .hopDisplay button{
     background-color: #CC7147;
+}
+
+.hopHide{
+    visibility: hidden;
+    opacity:0;
+    transition: opacity 1s,visibility 1s;
+}
+
+.hopVisible{
+    visibility: visible;
+    opacity: 1;
 }
 /* #beerBtn, #BreweryBtn */
 

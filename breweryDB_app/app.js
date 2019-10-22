@@ -278,8 +278,8 @@ $(() => {
         const hop = data.data
         //get grey background to cover the whole background
         $('.hopModal').css('height', $(window).height() + 'px')
-
-        $('.hopModal').css('display','block')
+        $('.hopModal').toggleClass('hopVisible')
+        // $('.hopModal').css({'visibility':'visible','opacity':'1'})
         let countryOrigin = ""
         let description = hop.description
         //code to deal with any incomplete data in the API
@@ -404,7 +404,7 @@ $(() => {
 
     //this will close the hops modal window
     $('body').on('click','#closeModal', () => {
-        $('.hopModal').css('display','none')
+        $('.hopModal').toggleClass('hopVisible')
     })
 
     $(window).on('resize', resize)
