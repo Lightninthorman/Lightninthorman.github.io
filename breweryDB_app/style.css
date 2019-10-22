@@ -216,7 +216,12 @@ p{
 }
 
 .hopDisplay h3{
-    display:inline-block;
+    display:flex;
+    justify-content:center;
+}
+
+.hopDisplay img{
+    display: none;
 }
 
 .hopDisplay button{
@@ -274,4 +279,9 @@ p{
     .col{
         width: 32%;
 
+    }
+
+    .hopDisplay img{
+        display: block;
+        margin: 0 auto;
     }

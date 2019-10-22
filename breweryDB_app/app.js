@@ -294,7 +294,6 @@ $(() => {
         //display data (or lack there of) in the modal
         $('.hopDisplay').append($('<img>').attr('src','imgs/wheatAndHops(3).png'))
         $('.hopDisplay').append($('<h3>').html(hop.name))
-        $('.hopDisplay').append($('<img>').attr('src','imgs/wheatAndHops(3).png'))
         $('.hopDisplay').append($('<p>').html("<span>Country of Origin:</span> " + countryOrigin + "<br><br><span>Description:</span><br>" + description))
         $('.hopDisplay').append($('<button>').attr('id','closeModal').addClass('button').html('Close'))
         $('.hopModal').css('height', $(document).height());
