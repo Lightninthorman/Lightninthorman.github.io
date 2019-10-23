@@ -7,6 +7,8 @@ The html is very simple consisting of a header for the search fields, a main wra
 
 There is a dynamic search function that makes clicking the search buttons almost obsolete. Though if the dynamic search lists multiple beers or breweries, clicking either the 'find my beer' or 'find my brewery' button will display the first result listed for that category. An example of where this has been helpful is when searching for Sierra Nevada brewery, but they also have a beer that starts with Sierra Nevada. Instead of typing out all of Sierra Nevada Brewing, just click on 'find my brewery' and it will select the brewery result.
 
+The past 5 searches will be displayed after a search is made. This information is stored in local storage and can be cleared by pressing the clear button.
+
 ## Important:
 Due to a cross origin resource sharing issue the database can only be reached with a proxy or by installing an extension to chrome. There are backend resolutions to this problem, but the API developers specifically state in their documentation that they do not respond to requests for front-end solutions. At this time I do not have the backend knowledge to address this, but will make an update when I am able to. 
 I used the proxy option, but found that the lag time was not optimal for creating a dynamic search. Instead I installed the chrome extension that can be found here:
@@ -43,4 +45,4 @@ If a beer has '&' in the title it screws up my search. I came across at least on
 
 if you type too fast the dynamic search gets bogged down and repeats results and doesn't quite work right. I think it's just that I have the computer doing a lot of computing with every keystroke and it gets all wonky. 
 
-If there's time I'm going to look into local storage, but an issue with populating the pages with jQuery is that there is no back button. If you click on something you didn't mean to it's not the easiest to get back to where you were.
+I was having trouble figuring out how to leave off listing items that are already in the search list. I think it was just getting too late. I'm sure it's easy enough. Ran out of time.
