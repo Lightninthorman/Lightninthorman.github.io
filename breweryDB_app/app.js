@@ -325,7 +325,8 @@ $(() => {
         $('.searchHistory').empty()
         if(localStorage.length > 0){
             history = JSON.parse(localStorage.getItem('search'))
-        }else if(history.length >= 5){
+        }
+        if(history.length >= 5){
             history.pop()
         }
 
