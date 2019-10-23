@@ -317,16 +317,18 @@ $(() => {
             $('body').css('height', ($('header').height() + $('main').height()) + 80 +'px')
         }
     }
-
+    //=====
+    //function to store searches in search history
+    //=====
     const searchHistory = (searchInput,searchBtn) => {
         let history = [];
         $('.searchHistory').empty()
         if(localStorage.length > 0){
             history = JSON.parse(localStorage.getItem('search'))
-        }
-        if(history.length >= 5){
+        }else if(history.length >= 5){
             history.pop()
         }
+        
         history.unshift({
             name: searchInput,
             type: searchBtn
@@ -338,6 +340,7 @@ $(() => {
             $searchList.append($search)
         }
         $('.searchHistory').append($searchList)
+        $('.searches').css('visibility','visible')
         localStorage.setItem('search',JSON.stringify(history))
         console.log(JSON.parse(localStorage.getItem('search')));
     }
@@ -410,7 +413,7 @@ $(() => {
         window.scrollTo(0,0);
         beerDb(dynamicSearch, searchBtn, searchInput)
     })
-
+    //click on item in search history to revisit
     $('.searchHistory').on('click',(event) => {
         const dynamicSearch = false
         const searchInput = $(event.target).html()
@@ -436,6 +439,7 @@ $(() => {
 
     $('#clear').on('click',() => {
         $('.searchHistory').empty()
+        $('.searches').css('visibility','hidden')
         localStorage.clear()
 
     })
