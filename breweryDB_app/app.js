@@ -328,7 +328,7 @@ $(() => {
         }else if(history.length >= 5){
             history.pop()
         }
-        
+
         history.unshift({
             name: searchInput,
             type: searchBtn
@@ -440,10 +440,11 @@ $(() => {
     $('#clear').on('click',() => {
         $('.searchHistory').empty()
         $('.searches').css('visibility','hidden')
+        window.scrollTo(0,0);
         localStorage.clear()
 
     })
-
+    //resize background when elements are added or removed or when window is resized
     $(window).on('resize', resize)
 
     $(document).scroll(resize)
