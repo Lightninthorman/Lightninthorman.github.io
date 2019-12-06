@@ -5,3 +5,4 @@ I found myself deeply unsatisfied with my career track working in Quality Assura
 * My first ever creation:[Beer Detective](https://github.com/Lightninthorman/Lightninthorman.github.io/tree/master/breweryDB_app)
 * Find leftover food in the office with [Vulture](https://github.com/Lightninthorman/vulture)
 * Group project. I designed the like and favorite feature, and created the sort and search abilities: [World Explorer](https://github.com/yortortle/FavoriteLocationsApp)
+* [Tumblr account](https://lightninthorman.tumblr.com/) where I have been storing my motion graphics and video projects. Most of these were for fun to learn new stuff with the Adobe software.
